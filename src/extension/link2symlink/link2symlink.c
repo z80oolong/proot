@@ -50,6 +50,8 @@ static int move_and_symlink_path(Tracee *tracee, Reg sysarg)
 	char new_intermediate[PATH_MAX];
 	char final[PATH_MAX];
 	char new_final[PATH_MAX];
+	char final_bak[PATH_MAX];
+	char intermediate_bak[PATH_MAX];
 	char * name;
 	struct stat statl;
 	ssize_t size;
@@ -123,18 +125,18 @@ static int move_and_symlink_path(Tracee *tracee, Reg sysarg)
 		if (status < 0) {
 			/* ensure rename final -> original */
 			rename(final, original);
+
 			return status;
 		}
 
 		/* Symlink the original path to the intermediate one.  */
 		status = symlink(intermediate, original);
 		if (status < 0) {
-			int status0;
 			/* ensure rename final -> original */
 			rename(final, original);
-			status0 = unlink(intermediate);
-			if (status0 < 0)
-				return status0;
+
+			/* ensure unlink intermediate */
+			unlink(intermediate);
 
 			return status;
 		}
@@ -153,12 +155,30 @@ static int move_and_symlink_path(Tracee *tracee, Reg sysarg)
 		status = rename(final, new_final);
 		if (status < 0)
 			return status;
+		strcpy(final_bak, final);
 		strcpy(final, new_final);
+		sprintf(intermediate_bak, "%s.bak", intermediate);
 		/* Symlink the intermediate to the final file.  */
-		status = unlink(intermediate);
-		if (status < 0)
+		status = rename(intermediate, intermediate_bak);
+		if (status < 0) {
+			/* ensure rename final_bak (original final) -> final */
+			rename(final, final_bak);
+
 			return status;
+		}
+
 		status = symlink(final, intermediate);
+		if (status < 0) {
+			/* ensure rename intermediate_bak (original intermediate) -> intermediate */
+			rename(intermediate_bak, intermediate);
+
+			/* ensure rename final_bak (original final) -> final */
+			rename(final, final_bak);
+
+			return status;
+		}
+
+		status = unlink(intermediate_bak);
 		if (status < 0)
 			return status;
 	}
