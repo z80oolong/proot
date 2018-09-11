@@ -111,6 +111,22 @@ typedef unsigned char byte_t;
     #undef SYSCALL_AVOIDER
     #define SYSCALL_AVOIDER ((word_t) 222)
 
+    #if !defined(__ANDROID__) && defined(__thumb__)
+    /* Fix a compile error of proot when edc869d -> 58d2161. */
+    /* These defines come from /usr/arm-linux-gnueabihf/include/asm/ptrace.h */
+    #ifndef ARM_cpsr
+    #define ARM_cpsr        uregs[16]
+    #endif /* ARM_cpsr */
+
+    #ifndef V4_PSR_T_BIT
+    #define V4_PSR_T_BIT    0x00000020      /* >= V4T, but not V7M */
+    #endif /* V4_PSR_T_BIT */
+
+    #ifndef PSR_T_BIT
+    #define PSR_T_BIT       V4_PSR_T_BIT
+    #endif /* PSR_T_BIT */
+    #endif /* !__ANDROID__ && __thumb__ */
+
 #elif defined(ARCH_ARM64)
 
     #define SYSNUMS_HEADER1 "syscall/sysnums-arm64.h"
@@ -138,6 +154,26 @@ typedef unsigned char byte_t;
     /* See https://github.com/termux/termux-packages/pull/390 */
     #undef SYSCALL_AVOIDER
     #define SYSCALL_AVOIDER ((word_t) -1)
+
+    #ifndef __ANDROID__
+    /* Fix a compile error of proot when using aarch64-linux-gnu-gcc. */
+    /* These define come from glibc/sysdeps/unix/sysv/linux/aarch64/sys/user.h */
+    /* See https://code.woboq.org/userspace/glibc//sysdeps/unix/sysv/linux/aarch64/sys/user.h.html */
+    #include <stdint.h>
+
+    struct user_regs_struct {
+	    uint64_t regs[31];
+	    uint64_t sp;
+	    uint64_t pc;
+	    uint64_t pstate;
+    };
+
+    struct user_fpsimd_struct {
+	    __uint128_t vregs[32];
+	    uint32_t fpsr;
+	    uint32_t fpcr;
+    };
+    #endif /* __ANDROID__ */
 
 #elif defined(ARCH_X86)
 

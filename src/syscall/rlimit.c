@@ -88,7 +88,7 @@ int translate_setrlimit_exit(const Tracee *tracee, bool is_prlimit)
 		/* Convert this special value from 32-bit to 64-bit,
 		 * if needed.  */
 		if (is_32on64_mode(tracee) && tracee_stack_limit == (uint32_t) -1)
-			tracee_stack_limit = RLIM_INFINITY;
+			tracee_stack_limit = (uint32_t)RLIM_INFINITY;
 	}
 	if (errno != 0)
 		return -errno;

@@ -24,7 +24,11 @@ const char *get_temp_directory()
 
 	temp_directory = getenv("PROOT_TMP_DIR");
 	if (temp_directory == NULL) {
-		temp_directory = P_tmpdir;
+		temp_directory = getenv("PROOT_TMPDIR");
+		if (temp_directory == NULL) {
+			temp_directory = P_tmpdir;
+			return temp_directory;
+		}
 	}
 
 	tmp = realpath(temp_directory, NULL);

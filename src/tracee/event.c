@@ -637,7 +637,7 @@ int handle_tracee_event(Tracee *tracee, int tracee_status)
 			break;
 
 		case SIGSYS: {
-			siginfo_t siginfo = {};
+			siginfo_t siginfo = { .si_signo = 0 };
 			ptrace(PTRACE_GETSIGINFO, tracee->pid, NULL, &siginfo);
 			if (siginfo.si_code == SYS_SECCOMP) {
 				if (tracee->skip_next_seccomp_signal) {
