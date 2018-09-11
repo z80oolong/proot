@@ -2,6 +2,7 @@
 #include <signal.h>    /* SIGSYS, */
 #include <unistd.h>    /* getpgid, */
 #include <utime.h>     /* utimbuf, */
+#include <string.h>    /* memcpy, */
 
 #include "cli/note.h"
 #include "syscall/chain.h"

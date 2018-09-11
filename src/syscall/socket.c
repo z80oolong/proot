@@ -28,6 +28,10 @@
 #include <sys/socket.h>  /* struct sockaddr_un, AF_UNIX, */
 #include <sys/un.h>      /* struct sockaddr_un, */
 #include <sys/param.h>   /* MIN(), MAX(), */
+#include <stdlib.h>      /* For proot_mktemp() */
+#include <time.h>        /* For proot_mktemp() */
+#include <sys/types.h>   /* For proot_mktemp() */
+#include <sys/stat.h>    /* For proot_mktemp() */
 
 #include "syscall/socket.h"
 #include "tracee/tracee.h"
@@ -39,11 +43,46 @@
 
 #include "compat.h"
 
+/* For proot_mktemp() */
+#define ALPHABET "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define XXXXXX "XXXXXX"
+
 /* The sockaddr_un structure has exactly the same layout on all
  * architectures.  */
 static const off_t offsetof_path = offsetof(struct sockaddr_un, sun_path);
 extern struct sockaddr_un sockaddr_un__;
 static const size_t sizeof_path  = sizeof(sockaddr_un__.sun_path);
+
+/**
+ * This function generates a unique temporary filename from @path.
+ * The last six characters of @path must be XXXXXX and these 
+ * are replaced with a string that makes the filename unique. 
+ * The function proot_mktemp() is made instead of mktemp(3) in glibc.
+ */
+static char *proot_mktemp(char *path) {
+	char *xptr, *p; struct stat st;
+
+	xptr = strstr((const char *)path, XXXXXX);
+
+	if ((xptr == (char *)NULL) || (*(xptr + strlen(XXXXXX)) != '\0')) {
+		(void)strncpy(path, "", strlen((const char *)path));
+		return (char *)NULL;
+	}
+
+	srand((unsigned int)time(NULL));
+
+	for ( ; ; ) {
+		for (p = xptr ; *p == 'X'; p++) {
+			*p = ALPHABET[rand() % strlen(ALPHABET)];
+		}
+
+		if (stat(path, &st) == -1) {
+			return path;
+		} else {
+			(void)strncpy(xptr, XXXXXX, strlen(XXXXXX));
+		}
+	}
+}
 
 /**
  * Copy in @sockaddr the struct sockaddr_un stored in the @tracee
@@ -120,7 +159,7 @@ int translate_socketcall_enter(Tracee *tracee, word_t *address, int size)
 		if (shorter_host_path == NULL || strlen(shorter_host_path) > sizeof_path)
 			return -EINVAL;
 
-		(void) mktemp(shorter_host_path);
+		(void) proot_mktemp(shorter_host_path);
 
 		if (strlen(shorter_host_path) > sizeof_path)
 			return -EINVAL;

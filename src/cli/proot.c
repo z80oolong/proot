@@ -221,8 +221,10 @@ static int handle_option_V(Tracee *tracee UNUSED, const Cli *cli, const char *va
 	fflush(stdout);
 
 	size = &_binary_licenses_end - &_binary_licenses_start;
-	if (size > 0)
-		write(1, &_binary_licenses_start, size);
+	if (size > 0) {
+		if (write(1, &_binary_licenses_start, size) < 0) { /* noop */
+		}
+	}
 
 	exit_failure = false;
 	return -1;

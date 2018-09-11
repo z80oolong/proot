@@ -238,7 +238,7 @@ static int fix_sendmsg(Tracee *tracee, bool is_socketcall)
 	/* Read sendmsg header.  */
 	int status;
 	unsigned long socketcall_args[3];
-	struct msghdr msg = {};
+	struct msghdr msg = { .msg_name = (void *)NULL };
 	if (!is_socketcall)
 	{
 		status = read_data(tracee, &msg, peek_reg(tracee, CURRENT, SYSARG_2), sizeof(struct msghdr));
@@ -813,12 +813,14 @@ static int handle_sysexit_end(Tracee *tracee, Config *config)
 status = translate_path(tracee, path_translated, AT_FDCWD, path, false);
 		if (status < 0)
 			return status;
-		realpath(path_translated, path_translated_absolute);
+		if (realpath(path_translated, path_translated_absolute) == NULL) {	/* noop */
+		}
 
 		status = translate_path(tracee, root_translated, AT_FDCWD, get_root(tracee), false);
 		if (status < 0)
 			return status;
-		realpath(root_translated, root_translated_absolute);
+		if (realpath(root_translated, root_translated_absolute) == NULL) { /* noop */
+		}
 
 		/* Only "new rootfs == current rootfs" is supported yet.  */
 		status = compare_paths(root_translated_absolute, path_translated_absolute);
