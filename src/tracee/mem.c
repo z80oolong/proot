@@ -192,7 +192,7 @@ static int ptrace_pokedata_or_via_stub(Tracee *tracee, word_t addr, word_t word)
 	return status;
 }
 
-void mem_prepare_after_execve(Tracee *tracee)
+void mem_prepare_after_execve(Tracee *tracee UNUSED)
 {
 #if HAS_POKEDATA_WORKAROUND
 	tracee->pokedata_workaround_stub_addr = peek_reg(tracee, CURRENT, INSTR_POINTER) + offset_to_pokedata_workaround;
