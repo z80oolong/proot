@@ -245,7 +245,12 @@ Copyright (C) 2015 STMicroelectronics, licensed under GPL v2 or later.",
                 { .name = "-H", .separator = '\0', .value = NULL },
                 { .name = NULL, .separator = '\0', .value = NULL } },
           .handler = handle_option_H,
+#ifdef USERLAND
           .description = "Hide files and directories starting with '.proot.' .",
+#endif
+#ifndef USERLAND
+          .description = "Hide files and directories starting with '.l2s.' . (If environment variable 'PROOT_L2S_DIR' is not set, this option is forced to set.)",
+#endif
           .detail = "",
         },
         { .class = "Extension options",

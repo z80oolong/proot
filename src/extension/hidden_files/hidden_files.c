@@ -13,7 +13,12 @@
 #include "path/path.h"
 
 /* Change the HIDDEN_PREFIX to change which files are hidden */
+#ifdef USERLAND
 #define HIDDEN_PREFIX ".proot"
+#endif 
+#ifndef USERLAND
+#define HIDDEN_PREFIX ".l2s."
+#endif 
 
 struct linux_dirent {
     unsigned long d_ino;
