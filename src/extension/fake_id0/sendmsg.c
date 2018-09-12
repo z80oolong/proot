@@ -13,7 +13,7 @@ int handle_sendmsg_enter_end(Tracee *tracee, word_t sysnum)
 	/* Read sendmsg header.  */
 	int status;
 	unsigned long socketcall_args[3];
-	struct msghdr msg = {};
+	struct msghdr msg = { .msg_name = (void *)NULL; };
 	bool is_socketcall = sysnum == PR_socketcall;
 
 	if (!is_socketcall)

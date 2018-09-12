@@ -230,7 +230,6 @@ static int handle_seccomp_event_common(Tracee *tracee)
 	case PR_statfs:
 	{
 		int size;
-		int status;
 		char path[PATH_MAX];
 		char original[PATH_MAX];
 		struct statfs64 my_statfs64;

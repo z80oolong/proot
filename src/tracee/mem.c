@@ -199,7 +199,7 @@ void mem_prepare_after_execve(Tracee *tracee)
 #endif
 }
 
-void mem_prepare_before_first_execve(Tracee *tracee)
+void mem_prepare_before_first_execve(Tracee *tracee UNUSED)
 {
 #if HAS_POKEDATA_WORKAROUND
 	tracee->pokedata_workaround_stub_addr = (word_t)&launcher_pokedata_workaround;
