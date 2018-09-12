@@ -318,7 +318,7 @@ static int parse_config(Tracee *tracee, size_t argc, char *const argv[])
 	/* If environment variable PROOT_L2S_DIR is not set, option "-H" is forced to set. */
 	l2s_directory = getenv("PROOT_L2S_DIR");
 	if (l2s_directory == NULL || l2s_directory[0] == '\0') {
-		if (handle_option_H(tracee, cli, arg)) { /* noop */
+		if (handle_option_H(tracee, cli, (const char *)NULL) < 0) { /* noop */
 		}
 	}
 
