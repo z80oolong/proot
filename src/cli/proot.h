@@ -249,7 +249,7 @@ Copyright (C) 2015 STMicroelectronics, licensed under GPL v2 or later.",
           .description = "Hide files and directories starting with '.proot.' .",
 #endif
 #ifndef USERLAND
-          .description = "Hide files and directories starting with '.l2s.' . (If environment variable 'PROOT_L2S_DIR' is not set, this option is forced to set.)",
+          .description = "Hide files and directories starting with '.l2s.' . (If environment variable 'PROOT_L2S_DIR' is not set, this option is forced to be set.)",
 #endif
           .detail = "",
         },
