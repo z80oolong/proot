@@ -303,7 +303,6 @@ static int parse_config(Tracee *tracee, size_t argc, char *const argv[])
 	size_t argc_offset;
 	size_t i, j, k;
 	int status;
-	char *l2s_directory;
 
 	/* Unknown tool name?  Default to PRoot.  */
 	if (cli == NULL)
@@ -313,13 +312,6 @@ static int parse_config(Tracee *tracee, size_t argc, char *const argv[])
 	if (argc == 1) {
 		print_usage(tracee, cli, false);
 		return -1;
-	}
-
-	/* If environment variable PROOT_L2S_DIR is not set, option "-H" is forced to be set. */
-	l2s_directory = getenv("PROOT_L2S_DIR");
-	if (l2s_directory == NULL || l2s_directory[0] == '\0') {
-		if(initialize_extension(tracee, hidden_files_callback, NULL) < 0) { /* noop */
-		}
 	}
 
 	for (i = 1; i < argc; i++) {

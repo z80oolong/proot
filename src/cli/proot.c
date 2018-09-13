@@ -285,11 +285,19 @@ static int handle_option_S(Tracee *tracee, const Cli *cli, const char *value)
 static int handle_option_link2symlink(Tracee *tracee, const Cli *cli UNUSED, const char *value UNUSED)
 {
 	int status;
+	char *l2s_directory;
 
 	/* Initialize the link2symlink extension.  */
 	status = initialize_extension(tracee, link2symlink_callback, NULL);
 	if (status < 0)
 		note(tracee, WARNING, INTERNAL, "link2symlink not initialized");
+
+	/* If environment variable PROOT_L2S_DIR is not set, the option "-H" is forced to be set. */
+	l2s_directory = getenv("PROOT_L2S_DIR");
+	if (l2s_directory == NULL || l2s_directory[0] == '\0') {
+		if(handle_option_H(tracee, cli, value) < 0) { /* noop */
+		}
+	}
 
 	return 0;
 }
