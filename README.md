@@ -23,7 +23,7 @@
 
 この git リポジトリに置かれている [proot][PROT] のソースコードは、 [termux の開発コミュニティ][TERM]による [proot][PROT] のソースコードを、 [Z.OOL. (mailto:zool@zool.jpn.org)][ZOOL] によって、 [Debian noroot 環境][DBNR]及び PC 上のクロスコンパイル環境においてビルド及び動作するよう修正したものです。
 
-従って、この [proot][PROT] のソースコードは、この git リポジトリに同梱されている [COPYING][COPY] の冒頭に記述されている [proot][PROT] の開発者の各氏と [termux の開発コミュニティの各氏][TERM]及び [Z.OOL. (mailto:zool@zool.jpn.org)][ZOOL] が著作権を有し、オリジナルとなる [proot][PROT] のソースコードと同様に、 [GNU public license version 2][GPL2] に従って配布されるものとします。
+従って、この [proot][PROT] のソースコードは、この git リポジトリに同梱されている [COPYING][COPY] の冒頭に記述されている STMicroelectronics 社の [proot][PROT] の開発者の各氏と [termux の開発コミュニティの各氏][TERM]及び [Z.OOL. (mailto:zool@zool.jpn.org)][ZOOL] が著作権を有し、オリジナルとなる [proot][PROT] のソースコードと同様に、 [GNU public license version 2][GPL2] に従って配布されるものとします。
 
 ## 追記
 
