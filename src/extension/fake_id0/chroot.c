@@ -32,12 +32,14 @@ int handle_chroot_exit_end(Tracee *tracee, Config *config) {
 	status = translate_path(tracee, path_translated, AT_FDCWD, path, false);
 	if (status < 0)
 		return status;
-	realpath(path_translated, path_translated_absolute);
+	if (realpath(path_translated, path_translated_absolute) == (char *)NULL) { /* noop */
+	}
 
 	status = translate_path(tracee, root_translated, AT_FDCWD, get_root(tracee), false);
 	if (status < 0)
 		return status;
-	realpath(root_translated, root_translated_absolute);
+	if (realpath(root_translated, root_translated_absolute) == (char *)NULL) { /* noop */
+	}
 
 	/* Only "new rootfs == current rootfs" is supported yet.  */
 	status = compare_paths(root_translated_absolute, path_translated_absolute);

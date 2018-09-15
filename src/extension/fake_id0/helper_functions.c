@@ -319,7 +319,8 @@ int read_meta_file(char path[PATH_MAX], mode_t *mode, uid_t *owner, gid_t *group
 		return 0;
 
 	}
-	fscanf(fp, "%d %d %d ", &lcl_mode, owner, group);
+	if (fscanf(fp, "%d %d %d ", &lcl_mode, owner, group) == EOF) { /* noop */
+	}
 	lcl_mode = otod(lcl_mode);
 	*mode = (mode_t)lcl_mode;
 	fclose(fp);
