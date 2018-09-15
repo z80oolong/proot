@@ -262,7 +262,11 @@ int fetch_regs(Tracee *tracee)
 	return 0;
 }
 
+#ifdef ARCH_ARM_EABI
 int push_specific_regs(Tracee *tracee, bool including_sysnum)
+#else
+int push_specific_regs(Tracee *tracee, bool including_sysnum UNUSED)
+#endif
 {
 	int status;
 
