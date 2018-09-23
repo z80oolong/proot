@@ -173,6 +173,12 @@ typedef unsigned char byte_t;
 	    uint32_t fpsr;
 	    uint32_t fpcr;
     };
+
+    /* This define come from /usr/src/include/uapi/linux/ptrace.h */
+    /* See https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/ptrace.h */
+    #ifndef PTRACE_SETSIGMASK
+    #define PTRACE_SETSIGMASK	0x420b
+    #endif
     #endif /* __ANDROID__ */
 
 #elif defined(ARCH_X86)

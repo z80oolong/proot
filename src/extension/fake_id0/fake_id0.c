@@ -1082,6 +1082,7 @@ int fake_id0_callback(Extension *extension, ExtensionEvent event, intptr_t data1
 			uid = getuid();
 
 		gid_string = strchr(uid_string, ':');
+		gid = 0;
 		if (gid_string == NULL) {
 			errno = EINVAL;
 		}

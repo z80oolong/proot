@@ -560,7 +560,9 @@ static int indent_level = 0;
 void __cyg_profile_func_enter(void *this_function, void *call_site) DONT_INSTRUMENT;
 void __cyg_profile_func_enter(void *this_function, void *call_site)
 {
+#ifndef __ANDROID__
 	void *const pointers[] = { this_function, call_site };
+#endif
 	char **symbols = NULL;
 
 #ifndef __ANDROID__
