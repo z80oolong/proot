@@ -557,8 +557,13 @@ const char *expand_front_variable(TALLOC_CTX *context, const char *string)
 
 static int indent_level = 0;
 
+#ifdef __ANDROID__
+void __cyg_profile_func_enter(void *this_function UNUSED, void *call_site UNUSED) DONT_INSTRUMENT;
+void __cyg_profile_func_enter(void *this_function UNUSED, void *call_site UNUSED)
+#else
 void __cyg_profile_func_enter(void *this_function, void *call_site) DONT_INSTRUMENT;
 void __cyg_profile_func_enter(void *this_function, void *call_site)
+#endif
 {
 #ifndef __ANDROID__
 	void *const pointers[] = { this_function, call_site };
