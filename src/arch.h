@@ -177,6 +177,9 @@ typedef unsigned char byte_t;
 
     /* This define come from /usr/src/include/uapi/linux/ptrace.h */
     /* See https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/ptrace.h */
+    #ifndef PTRACE_GETSIGMASK
+    #define PTRACE_GETSIGMASK	0x420a
+    #endif
     #ifndef PTRACE_SETSIGMASK
     #define PTRACE_SETSIGMASK	0x420b
     #endif
