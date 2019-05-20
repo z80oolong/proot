@@ -126,11 +126,6 @@ endif
 ######################################################################
 # Auto-configuration
 
-#CHECK_VERSION = VERSION=$$($(GIT) describe --tags --dirty --abbrev=8 --always 2>/dev/null); \
-#		if [ ! -z "$${VERSION}" ]; \
-#		then printf "\#undef VERSION\n\#define VERSION \"$${VERSION}\"\n"; \
-#		fi;
-
 CHECK_FEATURES = process_vm seccomp_filter
 CHECK_PROGRAMS = $(foreach feature,$(CHECK_FEATURES),.check_$(feature))
 CHECK_OBJECTS  = $(foreach feature,$(CHECK_FEATURES),.check_$(feature).o)
